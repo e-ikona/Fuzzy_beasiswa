@@ -1,0 +1,174 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="w-full max-w-5xl mx-auto py-8">
+    <div class="bg-white p-8 rounded-2xl shadow-xl transform transition-all duration-300 hover:shadow-2xl">
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold mb-4 gradient-text">Update Aturan & Domain</h1>
+            <p class="text-gray-600 text-lg">Kelola domain himpunan fuzzy dan aturan evaluasi beasiswa dengan mudah.</p>
+        </div>
+
+        <!-- Success Message -->
+        {% if message %}
+        <div class="mb-8 p-4 rounded-lg text-white font-bold text-center bg-green-500 shadow-md slide-in">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <form method="POST" class="space-y-10">
+            <!-- IPK Domains Section -->
+            <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 border-b-2 border-indigo-200 pb-2">Domain IPK</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700">Rendah (Min - Max)</label>
+                        <div class="flex space-x-3">
+                            <input type="number" step="0.01" name="ipk_rendah_min"
+                                value="{{ fuzzy_config.ipk_domains.rendah[0] }}" required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                            <input type="number" step="0.01" name="ipk_rendah_max"
+                                value="{{ fuzzy_config.ipk_domains.rendah[1] }}" required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700">Sedang (Min - Max)</label>
+                        <div class="flex space-x-3">
+                            <input type="number" step="0.01" name="ipk_sedang_min"
+                                value="{{ fuzzy_config.ipk_domains.sedang[0] }}" required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                            <input type="number" step="0.01" name="ipk_sedang_max"
+                                value="{{ fuzzy_config.ipk_domains.sedang[1] }}" required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700">Tinggi (Min - Max)</label>
+                        <div class="flex space-x-3">
+                            <input type="number" step="0.01" name="ipk_tinggi_min"
+                                value="{{ fuzzy_config.ipk_domains.tinggi[0] }}" required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                            <input type="number" step="0.01" name="ipk_tinggi_max"
+                                value="{{ fuzzy_config.ipk_domains.tinggi[1] }}" required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- POT Domains Section -->
+            <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 border-b-2 border-indigo-200 pb-2">Domain
+                    Penghasilan Orang Tua</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700">Rendah (Min - Max)</label>
+                        <div class="flex space-x-3">
+                            <input type="number" name="pot_rendah_min" value="{{ fuzzy_config.pot_domains.rendah[0] }}"
+                                required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                            <input type="number" name="pot_rendah_max" value="{{ fuzzy_config.pot_domains.rendah[1] }}"
+                                required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700">Sedang (Min - Max)</label>
+                        <div class="flex space-x-3">
+                            <input type="number" name="pot_sedang_min" value="{{ fuzzy_config.pot_domains.sedang[0] }}"
+                                required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                            <input type="number" name="pot_sedang_max" value="{{ fuzzy_config.pot_domains.sedang[1] }}"
+                                required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700">Tinggi (Min - Max)</label>
+                        <div class="flex space-x-3">
+                            <input type="number" name="pot_tinggi_min" value="{{ fuzzy_config.pot_domains.tinggi[0] }}"
+                                required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                            <input type="number" name="pot_tinggi_max" value="{{ fuzzy_config.pot_domains.tinggi[1] }}"
+                                required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JTO Domains Section -->
+            <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 border-b-2 border-indigo-200 pb-2">Domain Jumlah
+                    Tanggungan Orang Tua</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700">Rendah (Min - Max)</label>
+                        <div class="flex space-x-3">
+                            <input type="number" name="jto_rendah_min" value="{{ fuzzy_config.jto_domains.rendah[0] }}"
+                                required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                            <input type="number" name="jto_rendah_max" value="{{ fuzzy_config.jto_domains.rendah[1] }}"
+                                required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700">Sedang (Min - Max)</label>
+                        <div class="flex space-x-3">
+                            <input type="number" name="jto_sedang_min" value="{{ fuzzy_config.jto_domains.sedang[0] }}"
+                                required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                            <input type="number" name="jto_sedang_max" value="{{ fuzzy_config.jto_domains.sedang[1] }}"
+                                required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700">Tinggi (Min - Max)</label>
+                        <div class="flex space-x-3">
+                            <input type="number" name="jto_tinggi_min" value="{{ fuzzy_config.jto_domains.tinggi[0] }}"
+                                required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                            <input type="number" name="jto_tinggi_max" value="{{ fuzzy_config.jto_domains.tinggi[1] }}"
+                                required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rules Section -->
+            <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 border-b-2 border-indigo-200 pb-2">Aturan Fuzzy (0
+                    = Ditolak, 1 = Diterima)</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {% for key, value in fuzzy_config.rules.items() %}
+                    <div
+                        class="flex items-center space-x-3 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <label class="text-gray-700 font-medium flex-1">{{ key[0] }}-{{ key[1] }}-{{ key[2] }}</label>
+                        <select name="rule_{{ '_'.join(key).lower() }}"
+                            class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                            <option value="0" {{ 'selected' if value==0 else '' }}>0 (Ditolak)</option>
+                            <option value="1" {{ 'selected' if value==1 else '' }}>1 (Diterima)</option>
+                        </select>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit"
+                    class="w-full md:w-1/2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
+                    Simpan Perubahan
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

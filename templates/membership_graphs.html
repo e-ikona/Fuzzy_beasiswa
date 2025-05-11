@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="w-full max-w-5xl mx-auto py-8">
+    <div class="bg-white p-8 rounded-2xl shadow-xl transform transition-all duration-300 hover:shadow-2xl">
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold mb-4 gradient-text">Grafik Fungsi Keanggotaan</h1>
+            <p class="text-gray-600 text-lg">Visualisasi fungsi keanggotaan untuk setiap variabel dalam sistem fuzzy.</p>
+        </div>
+
+        <!-- Graphs Section -->
+        <div class="space-y-10">
+            {% for var_name, plot_filename in plot_filenames.items() %}
+            <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 border-b-2 border-indigo-200 pb-2">
+                    Fungsi Keanggotaan {{ var_name|upper }}
+                </h2>
+                <div class="flex justify-center">
+                    <img src="{{ url_for('static', filename=plot_filename) }}" alt="Membership Function for {{ var_name }}"
+                        class="max-w-full h-auto rounded-lg shadow-md">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

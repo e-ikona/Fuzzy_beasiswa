@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-300 hover:shadow-3xl">
+    <h1 class="text-3xl font-extrabold mb-6 text-center gradient-text">Fuzzy Beasiswa Evaluator</h1>
+    <p class="text-center text-gray-600 mb-6">Masukkan data Anda untuk mengevaluasi kelayakan beasiswa!</p>
+    <form method="POST" class="space-y-6" onsubmit="return validateForm()">
+        <div>
+            <label class="block mb-2 font-semibold text-gray-700">IPK</label>
+            <input type="number" step="0.01" name="ipk" id="ipk" required
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                min="3" max="4" oninput="validateIPK(this)">
+            <small id="ipk-error" class="text-red-500 hidden">IPK harus antara 3.0 dan 4.0</small>
+        </div>
+        <div>
+            <label class="block mb-2 font-semibold text-gray-700">Penghasilan Orang Tua (Rp)</label>
+            <input type="text" name="pot" id="pot" required
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                oninput="formatPOT(this)" onblur="validatePOT(this)">
+            <small id="pot-error" class="text-red-500 hidden">Penghasilan harus antara 0 dan 7.000.000</small>
+        </div>
+        <div>
+            <label class="block mb-2 font-semibold text-gray-700">Jumlah Tanggungan Orang Tua</label>
+            <input type="number" name="jto" id="jto" required
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                min="1" max="5" oninput="validateJTO(this)">
+            <small id="jto-error" class="text-red-500 hidden">Tanggungan harus antara 1 dan 5</small>
+        </div>
+        <button type="submit"
+            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
+            Evaluasi Sekarang
+        </button>
+    </form>
+
+    {% if result %}
+    <div class="mt-6 p-4 rounded-lg text-white font-bold text-center slide-in
+            {{ 'bg-green-500' if result == 'DITERIMA' else 'bg-red-500' }} shadow-md">
+        Hasil: {{ result }}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
