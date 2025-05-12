@@ -5,10 +5,13 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import json
 
 app = Flask(__name__)
 
-fuzzy_config = {
+CONFIG_FILE = 'fuzzy_config.json'
+
+default_config = {
     'ipk_domains': {
         'rendah': [3.0, 3.50],
         'sedang': [3.25, 3.75],
@@ -27,10 +30,10 @@ fuzzy_config = {
     'rules': {
         ('RENDAH', 'RENDAH', 'RENDAH'): 0,
         ('RENDAH', 'RENDAH', 'SEDANG'): 0,
-        ('RENDAH', 'SEDANG', 'TINGGI'): 1,
+        ('RENDAH', 'RENDAH', 'TINGGI'): 0,
         ('RENDAH', 'SEDANG', 'RENDAH'): 0,
         ('RENDAH', 'SEDANG', 'SEDANG'): 0,
-        ('RENDAH', 'SEDANG', 'TINGGI'): 0,
+        ('RENDAH', 'SEDANG', 'TINGGI'): 1,
         ('RENDAH', 'TINGGI', 'RENDAH'): 0,
         ('RENDAH', 'TINGGI', 'SEDANG'): 0,
         ('RENDAH', 'TINGGI', 'TINGGI'): 0,
@@ -54,6 +57,20 @@ fuzzy_config = {
         ('TINGGI', 'TINGGI', 'TINGGI'): 1
     }
 }
+
+if os.path.exists(CONFIG_FILE):
+    with open(CONFIG_FILE, 'r') as f:
+        loaded_config = json.load(f)
+    fuzzy_config = loaded_config.copy()
+    fuzzy_config['rules'] = {
+        tuple(k.split('_')): v for k, v in loaded_config['rules'].items()
+    }
+else:
+    fuzzy_config = default_config.copy()
+    with open(CONFIG_FILE, 'w') as f:
+        config_to_save = fuzzy_config.copy()
+        config_to_save['rules'] = {f"{k[0]}_{k[1]}_{k[2]}": v for k, v in fuzzy_config['rules'].items()}
+        json.dump(config_to_save, f, indent=4)
 
 def fuzzy_ipk(ipk):
     domains = fuzzy_config['ipk_domains']
@@ -108,6 +125,7 @@ def index():
 
 @app.route('/update_rules', methods=['GET', 'POST'])
 def update_rules():
+    global fuzzy_config
     message = None
     if request.method == 'POST':
         fuzzy_config['ipk_domains'] = {
@@ -128,6 +146,11 @@ def update_rules():
         for key in fuzzy_config['rules']:
             form_key = f"rule_{'_'.join(key).lower()}"
             fuzzy_config['rules'][key] = int(request.form[form_key])
+        # Simpan ke file dengan kunci sebagai string
+        with open(CONFIG_FILE, 'w') as f:
+            config_to_save = fuzzy_config.copy()
+            config_to_save['rules'] = {f"{k[0]}_{k[1]}_{k[2]}": v for k, v in fuzzy_config['rules'].items()}
+            json.dump(config_to_save, f, indent=4)
         message = "Rules and domains updated successfully!"
     return render_template('update_rules.html', fuzzy_config=fuzzy_config, message=message)
 

@@ -1,0 +1,73 @@
+{
+    "ipk_domains": {
+        "rendah": [
+            3.0,
+            3.5
+        ],
+        "sedang": [
+            3.25,
+            3.75
+        ],
+        "tinggi": [
+            3.5,
+            4.0
+        ]
+    },
+    "pot_domains": {
+        "rendah": [
+            0.0,
+            3500000.0
+        ],
+        "sedang": [
+            1750000.0,
+            5250000.0
+        ],
+        "tinggi": [
+            3500000.0,
+            7000000.0
+        ]
+    },
+    "jto_domains": {
+        "rendah": [
+            1.0,
+            3.0
+        ],
+        "sedang": [
+            2.0,
+            4.0
+        ],
+        "tinggi": [
+            3.0,
+            5.0
+        ]
+    },
+    "rules": {
+        "RENDAH_RENDAH_RENDAH": 0,
+        "RENDAH_RENDAH_SEDANG": 0,
+        "RENDAH_RENDAH_TINGGI": 0,
+        "RENDAH_SEDANG_RENDAH": 0,
+        "RENDAH_SEDANG_SEDANG": 0,
+        "RENDAH_SEDANG_TINGGI": 1,
+        "RENDAH_TINGGI_RENDAH": 0,
+        "RENDAH_TINGGI_SEDANG": 0,
+        "RENDAH_TINGGI_TINGGI": 0,
+        "SEDANG_RENDAH_RENDAH": 1,
+        "SEDANG_RENDAH_SEDANG": 1,
+        "SEDANG_RENDAH_TINGGI": 1,
+        "SEDANG_SEDANG_RENDAH": 0,
+        "SEDANG_SEDANG_SEDANG": 1,
+        "SEDANG_SEDANG_TINGGI": 1,
+        "SEDANG_TINGGI_RENDAH": 0,
+        "SEDANG_TINGGI_SEDANG": 0,
+        "SEDANG_TINGGI_TINGGI": 1,
+        "TINGGI_RENDAH_RENDAH": 1,
+        "TINGGI_RENDAH_SEDANG": 1,
+        "TINGGI_RENDAH_TINGGI": 1,
+        "TINGGI_SEDANG_RENDAH": 1,
+        "TINGGI_SEDANG_SEDANG": 1,
+        "TINGGI_SEDANG_TINGGI": 1,
+        "TINGGI_TINGGI_RENDAH": 0,
+        "TINGGI_TINGGI_SEDANG": 0,
+        "TINGGI_TINGGI_TINGGI": 0
+    }
+}
