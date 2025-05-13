@@ -1,0 +1,85 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="w-full max-w-5xl mx-auto py-8">
+    <div class="bg-white p-8 rounded-2xl shadow-xl transform transition-all duration-300 hover:shadow-2xl">
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold mb-4 gradient-text">Update Variabel Aturan</h1>
+            <p class="text-gray-600 text-lg">Tambah atau hapus variabel aturan untuk evaluasi fuzzy.</p>
+        </div>
+
+        <!-- Success/Error Message -->
+        {% if message %}
+        <div class="mb-8 p-4 rounded-lg text-white font-bold text-center bg-green-500 shadow-md slide-in">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <!-- Daftar Variabel -->
+        <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 mb-10">
+            <h2 class="text-2xl font-semibold mb-6 text-gray-800 border-b-2 border-indigo-200 pb-2">Daftar Variabel</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {% for var_name in fuzzy_config.variables.keys() %}
+                <div class="bg-white p-4 rounded-lg shadow-sm flex justify-between items-center">
+                    <span class="text-gray-700 font-medium capitalize">{{ var_name }}</span>
+                    <form method="POST" class="inline">
+                        <input type="hidden" name="delete_variable" value="{{ var_name }}">
+                        <button type="submit" class="text-red-500 hover:text-red-700 font-medium">Hapus</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Form Tambah Variabel -->
+        <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+            <h2 class="text-2xl font-semibold mb-6 text-gray-800 border-b-2 border-indigo-200 pb-2">Tambah Variabel Baru
+            </h2>
+            <form method="POST" class="space-y-6">
+                <div>
+                    <label class="block mb-2 font-medium text-gray-700">Nama Variabel</label>
+                    <input type="text" name="var_name" required
+                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+                        placeholder="Contoh: pendapatan">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700">Rendah (Min - Max)</label>
+                        <div class="flex space-x-3">
+                            <input type="number" step="any" name="var_rendah_min" required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                            <input type="number" step="any" name="var_rendah_max" required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700">Sedang (Min - Max)</label>
+                        <div class="flex space-x-3">
+                            <input type="number" step="any" name="var_sedang_min" required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                            <input type="number" step="any" name="var_sedang_max" required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700">Tinggi (Min - Max)</label>
+                        <div class="flex space-x-3">
+                            <input type="number" step="any" name="var_tinggi_min" required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                            <input type="number" step="any" name="var_tinggi_max" required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" name="add_variable"
+                        class="w-full md:w-1/2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
+                        Tambah Variabel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

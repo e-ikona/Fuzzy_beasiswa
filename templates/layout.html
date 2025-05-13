@@ -2,59 +2,78 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Fuzzy Beasiswa Evaluator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuzzy Logic Beasiswa</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+        .gradient-text {
+            background: linear-gradient(to right, #4F46E5, #EC4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s ease-in-out;
+        }
+
         @keyframes slideIn {
-            from {
+            0% {
                 transform: translateY(-20px);
                 opacity: 0;
             }
 
-            to {
+            100% {
                 transform: translateY(0);
                 opacity: 1;
             }
         }
-
-        .slide-in {
-            animation: slideIn 0.5s ease-out;
-        }
-
-        .gradient-text {
-            background: linear-gradient(90deg, #6b46c1, #ed64a6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
     </style>
 </head>
 
-<body class="bg-gradient-to-br from-indigo-100 to-purple-100 min-h-screen flex flex-col">
-    <!-- Navigation Bar -->
-    <nav class="bg-white shadow-lg p-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold gradient-text">Fuzzy Beasiswa</a>
-            <div class="space-x-4">
-                <a href="/" class="text-gray-700 hover:text-blue-600 font-semibold transition duration-200">Prediksi</a>
-                <a href="/update_rules"
-                    class="text-gray-700 hover:text-blue-600 font-semibold transition duration-200">Update Aturan</a>
-                <a href="/membership_graphs"
-                    class="text-gray-700 hover:text-blue-600 font-semibold transition duration-200">Grafik
-                    Keanggotaan</a>
+<body class="bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <h1 class="text-2xl font-bold gradient-text">Fuzzy Beasiswa</h1>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="{{ url_for('index') }}"
+                            class="border-b-2 border-transparent text-gray-700 hover:border-indigo-500 hover:text-indigo-700 inline-flex items-center px-1 pt-1 text-sm font-medium">Home</a>
+                        <a href="{{ url_for('update_rules') }}"
+                            class="border-b-2 border-transparent text-gray-700 hover:border-indigo-500 hover:text-indigo-700 inline-flex items-center px-1 pt-1 text-sm font-medium">Update
+                            Rules</a>
+                        <a href="{{ url_for('update_variables') }}"
+                            class="border-b-2 border-transparent text-gray-700 hover:border-indigo-500 hover:text-indigo-700 inline-flex items-center px-1 pt-1 text-sm font-medium">Update
+                            Variables</a>
+                        <a href="{{ url_for('membership_graphs') }}"
+                            class="border-b-2 border-transparent text-gray-700 hover:border-indigo-500 hover:text-indigo-700 inline-flex items-center px-1 pt-1 text-sm font-medium">Membership
+                            Graphs</a>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="flex-grow flex items-center justify-center p-4">
-        {% block content %}{% endblock %}
-    </div>
+    <main class="flex-grow">
+        {% block content %}
+        {% endblock %}
+    </main>
 
+    <!-- Footer -->
+    <footer class="bg-white shadow-inner mt-8">
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-gray-500 text-sm">© 2025 Fuzzy Logic Beasiswa. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
     {% block scripts %}
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
     {% endblock %}
 </body>
+
 </html>

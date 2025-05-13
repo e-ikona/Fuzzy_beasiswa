@@ -1,42 +1,58 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-300 hover:shadow-3xl">
-    <h1 class="text-3xl font-extrabold mb-6 text-center gradient-text">Fuzzy Beasiswa Evaluator</h1>
-    <p class="text-center text-gray-600 mb-6">Masukkan data Anda untuk mengevaluasi kelayakan beasiswa!</p>
-    <form method="POST" class="space-y-6" onsubmit="return validateForm()">
-        <div>
-            <label class="block mb-2 font-semibold text-gray-700">IPK</label>
-            <input type="number" step="0.01" name="ipk" id="ipk" required
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                min="3" max="4" oninput="validateIPK(this)">
-            <small id="ipk-error" class="text-red-500 hidden">IPK harus antara 3.0 dan 4.0</small>
+<div class="w-full max-w-3xl mx-auto py-8">
+    <div class="bg-white p-8 rounded-2xl shadow-xl transform transition-all duration-300 hover:shadow-2xl">
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold mb-4 gradient-text">Evaluasi Beasiswa Fuzzy</h1>
+            <p class="text-gray-600 text-lg">Masukkan data untuk menentukan kelayakan beasiswa.</p>
         </div>
-        <div>
-            <label class="block mb-2 font-semibold text-gray-700">Penghasilan Orang Tua (Rp)</label>
-            <input type="text" name="pot" id="pot" required
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                oninput="formatPOT(this)" onblur="validatePOT(this)">
-            <small id="pot-error" class="text-red-500 hidden">Penghasilan harus antara 0 dan 7.000.000</small>
-        </div>
-        <div>
-            <label class="block mb-2 font-semibold text-gray-700">Jumlah Tanggungan Orang Tua</label>
-            <input type="number" name="jto" id="jto" required
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                min="1" max="5" oninput="validateJTO(this)">
-            <small id="jto-error" class="text-red-500 hidden">Tanggungan harus antara 1 dan 5</small>
-        </div>
-        <button type="submit"
-            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
-            Evaluasi Sekarang
-        </button>
-    </form>
 
-    {% if result %}
-    <div class="mt-6 p-4 rounded-lg text-white font-bold text-center slide-in
-            {{ 'bg-green-500' if result == 'DITERIMA' else 'bg-red-500' }} shadow-md">
-        Hasil: {{ result }}
+        <!-- Form Section -->
+        <form method="POST" class="space-y-6">
+            {% for var_name in variables.keys() %}
+            <div>
+                <label class="block mb-2 font-medium text-gray-700 capitalize">{{ var_name }}</label>
+                <input type="{% if var_name == 'jto' %}number{% else %}text{% endif %}" name="{{ var_name }}" {% if
+                    var_name=='jto' %}step="1" {% endif %}
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+                    placeholder="{% if var_name == 'ipk' %}Masukkan IPK (contoh: 3.75){% elif var_name == 'pot' %}Masukkan Penghasilan (contoh: 3.500.000){% elif var_name == 'jto' %}Masukkan Jumlah Tanggungan (contoh: 3){% else %}Masukkan nilai untuk {{ var_name }}{% endif %}"
+                    required>
+            </div>
+            {% endfor %}
+            <div class="text-center">
+                <button type="submit"
+                    class="w-full md:w-1/2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
+                    Evaluasi
+                </button>
+            </div>
+        </form>
+
+        <!-- Result Section -->
+        {% if result %}
+        <div
+            class="mt-8 p-4 rounded-lg text-center {% if result == 'DITERIMA' %}bg-green-500{% else %}bg-red-500{% endif %} text-white font-bold slide-in">
+            Hasil Evaluasi: {{ result }}
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+{% if 'pot' in variables %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const potInput = document.querySelector('input[name="pot"]');
+        potInput.addEventListener('input', function (e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            if (value) {
+                value = parseInt(value).toLocaleString('id-ID');
+            }
+            e.target.value = value;
+        });
+    });
+</script>
+{% endif %}
 {% endblock %}
