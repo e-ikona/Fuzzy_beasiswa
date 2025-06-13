@@ -98,38 +98,67 @@ else:
         config_to_save['rules'] = {f"{'_'.join(k)}": v for k, v in fuzzy_config['rules'].items()}
         json.dump(config_to_save, f, indent=4)
 
-# Fungsi fuzzy untuk setiap variabel
+
 def fuzzy_variable(value, var_name):
     domains = fuzzy_config['variables'][var_name]
-    if value <= domains['rendah'][1]:
-        return 'RENDAH', max(0, min((domains['sedang'][1] - value) / (domains['sedang'][1] - domains['rendah'][0]), 1))
-    elif domains['sedang'][0] < value <= domains['sedang'][1]:
-        return 'SEDANG', max(0, min((value - domains['sedang'][0]) / (domains['sedang'][1] - domains['sedang'][0]), 1))
-    elif value > domains['tinggi'][0]:
-        return 'TINGGI', max(0, min((value - domains['tinggi'][0]) / (domains['tinggi'][1] - domains['tinggi'][0]), 1))
-    return None, 0
+    memberships = {}
+
+    # RENDAH
+    a, b = domains['rendah']
+    if value <= a:
+        memberships['RENDAH'] = 1
+    elif a < value < b:
+        memberships['RENDAH'] = (b - value) / (b - a)
+    else:
+        memberships['RENDAH'] = 0
+
+    # SEDANG
+    a, b = domains['sedang']
+    if a < value < b:
+        memberships['SEDANG'] = (value - a) / (b - a)
+    elif value == a or value == b:
+        memberships['SEDANG'] = 1
+    else:
+        memberships['SEDANG'] = 0
+
+    # TINGGI
+    a, b = domains['tinggi']
+    if value <= a:
+        memberships['TINGGI'] = 0
+    elif a < value < b:
+        memberships['TINGGI'] = (value - a) / (b - a)
+    else:
+        memberships['TINGGI'] = 1
+
+    return memberships
+
 
 def fuzzy_evaluation(inputs):
     var_names = list(fuzzy_config['variables'].keys())
+    
+    # Simpan semua µ untuk semua label dari tiap variabel
     memberships = {}
     for var_name, value in inputs.items():
-        label, mu = fuzzy_variable(value, var_name)
-        memberships[var_name] = (label, mu)
+        memberships[var_name] = fuzzy_variable(value, var_name)  # Dict: {'RENDAH': µ, ...}
 
     rules = fuzzy_config['rules']
-    weighted_outputs = []
+    numerator = 0
+    denominator = 0
+
     for rule_key, output in rules.items():
         mu_values = []
         for i, var_name in enumerate(var_names):
-            label, mu = memberships[var_name]
-            if label != rule_key[i]:
-                mu = 0
+            label = rule_key[i]
+            mu = memberships[var_name].get(label, 0)
             mu_values.append(mu)
-        rule_mu = min(mu_values)
-        weighted_outputs.append(rule_mu * output)
 
-    final_output = sum(weighted_outputs) / len(weighted_outputs) if weighted_outputs else 0
+        rule_mu = min(mu_values)
+        numerator += rule_mu * output
+        denominator += rule_mu
+
+    final_output = numerator / denominator if denominator != 0 else 0
     return 'DITERIMA' if final_output >= 0.5 else 'DITOLAK'
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
